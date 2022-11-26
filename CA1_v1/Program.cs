@@ -1,3 +1,5 @@
+using CA1_v1.Repository;
+
 namespace CA1_v1
 {
     public class Program
@@ -8,6 +10,7 @@ namespace CA1_v1
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+            builder.Services.AddScoped<IMockRepo, MockRepo>();
 
             var app = builder.Build();
 
