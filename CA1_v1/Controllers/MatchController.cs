@@ -1,10 +1,21 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using CA1_v1.Models;
+using CA1_v1.Repository;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CA1_v1.Controllers
 {
     public class MatchController : Controller
     {
+        //add repo
+        IMockRepo _repo;
+
+        public MatchController(IMockRepo repo)
+        {
+            _repo = repo;
+        }
+
+
         // GET: MatchController
         public ActionResult Index()
         {
@@ -26,11 +37,16 @@ namespace CA1_v1.Controllers
         // POST: MatchController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public ActionResult Create(Match m)
         {
             try
             {
-                return RedirectToAction(nameof(Index));
+                if (ModelState.IsValid)
+                {
+                    _repo.CreateFixture(m);
+                    return RedirectToAction(nameof(Index));
+                }
+                return View();
             }
             catch
             {
